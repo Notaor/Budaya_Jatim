@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kuis Budaya Jawa Timur - East Java Culture Hub</title>
+  <meta name="description"
+    content="Uji pengetahuan Anda tentang budaya Jawa Timur dengan kuis interaktif yang menarik" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+
+<body class="font-source-sans bg-background text-text-primary min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <svg class="h-10 w-10 text-primary" viewBox="0 0 40 40" fill="currentColor">
+            <path d="M20 2L37 12v16L20 38L3 28V12L20 2z" />
+            <path d="M20 8L30 14v12L20 32L10 26V14L20 8z" fill="white" />
+            <circle cx="20" cy="20" r="6" fill="currentColor" />
+          </svg>
+          <span class="ml-3 text-xl font-playfair font-semibold text-text-primary">East Java Culture Hub</span>
+        </div>
+        <a href="../pages/landing_page.html" class="text-primary hover:text-primary-600 font-medium">Kembali ke
+          Beranda</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Game Content -->
+  <section class="pt-24 pb-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-playfair font-bold text-text-primary mb-4">
+          Kuis Budaya Jawa Timur
+        </h1>
+        <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+          Uji pengetahuan Anda tentang warisan budaya Jawa Timur dengan pertanyaan menarik dari berbagai aspek budaya
+        </p>
+      </div>
+
+      <!-- Game Container -->
+      <div class="cultural-card bg-white rounded-2xl p-8 mb-8">
+        <!-- Game Interface -->
+        <div id="quiz-container" class="min-h-96">
+          <!-- Welcome Screen -->
+          <div id="welcome-screen" class="text-center py-12">
+            <div class="w-32 h-32 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 class="text-3xl font-playfair font-bold text-text-primary mb-4">Selamat Datang di Kuis Budaya Jawa
+              Timur!</h2>
+            <p class="text-text-secondary mb-6 max-w-2xl mx-auto">
+              Jawab pertanyaan seputar budaya Jawa Timur dan raih skor tertinggi! Setiap jawaban benar akan memberikan
+              Anda 10 poin.
+            </p>
+            <button id="start-quiz" class="btn-primary px-8 py-4 text-lg">
+              Mulai Kuis
+            </button>
+          </div>
+
+          <!-- Quiz Screen -->
+          <div id="quiz-screen" class="hidden">
+            <!-- Progress Bar -->
+            <div class="mb-8">
+              <div class="flex justify-between text-sm text-text-primary mb-2">
+                <span>Pertanyaan <span id="current-question">1</span> dari <span id="total-questions">10</span></span>
+                <span>Skor: <span id="score">0</span></span>
+              </div>
+              <div class="w-full bg-border rounded-full h-3">
+                <div id="progress-bar" class="bg-primary h-3 rounded-full transition-all duration-300"
+                  style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Question -->
+            <div id="question-container" class="mb-8">
+              <h3 id="question" class="text-2xl font-playfair font-semibold text-text-primary mb-6 text-center"></h3>
+              <div id="question-image" class="mb-6 rounded-lg overflow-hidden hidden">
+                <img src="" alt="" class="w-full h-48 object-cover">
+              </div>
+            </div>
+
+            <!-- Options -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <!-- Options will be dynamically generated -->
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between">
+              <button id="prev-question"
+                class="bg-border text-text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary hover:text-white transition-250 hidden">
+                Sebelumnya
+              </button>
+              <button id="next-question"
+                class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-600 transition-250">
+                Selanjutnya
+              </button>
+            </div>
+          </div>
+
+          <!-- Results Screen -->
+          <div id="results-screen" class="hidden text-center py-12">
+            <div class="w-32 h-32 bg-success rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 class="text-3xl font-playfair font-bold text-text-primary mb-4">Kuis Selesai!</h2>
+            <div class="text-4xl font-bold text-primary mb-2" id="final-score">0</div>
+            <p class="text-text-secondary mb-2" id="result-message"></p>
+            <div class="mb-6">
+              <div id="result-details" class="text-sm text-text-muted"></div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button id="restart-quiz" class="btn-primary px-6 py-3">
+                Main Lagi
+              </button>
+              <a href="../pages/landing_page.html#games"
+                class="bg-white text-text-primary border-2 border-border px-6 py-3 rounded-lg font-medium text-center hover:bg-border transition-250">
+                Kembali ke Beranda
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz Categories -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="cultural-card bg-white rounded-xl p-6 text-center">
+          <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-playfair font-semibold text-text-primary mb-2">Seni & Tarian</h3>
+          <p class="text-text-secondary">Tari tradisional dan kesenian Jawa Timur</p>
+        </div>
+        <div class="cultural-card bg-white rounded-xl p-6 text-center">
+          <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-playfair font-semibold text-text-primary mb-2">Sejarah & Candi</h3>
+          <p class="text-text-secondary">Peninggalan bersejarah dan situs budaya</p>
+        </div>
+        <div class="cultural-card bg-white rounded-xl p-6 text-center">
+          <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-playfair font-semibold text-text-primary mb-2">Kuliner Tradisional</h3>
+          <p class="text-text-secondary">Makanan khas dan tradisi kuliner</p>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="cultural-card bg-white rounded-xl p-8">
+        <div class="text-center mb-6">
+          <h3 class="text-2xl font-playfair font-semibold text-text-primary mb-2">Papan Peringkat</h3>
+          <p class="text-text-secondary">Raih posisi tertinggi dan jadilah ahli budaya Jawa Timur!</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="text-center">
+            <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
+              <span class="text-2xl font-bold text-white">1</span>
+            </div>
+            <h4 class="font-semibold text-text-primary">Budi Santoso</h4>
+            <p class="text-sm text-text-secondary">950 poin</p>
+          </div>
+          <div class="text-center">
+            <div class="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-3">
+              <span class="text-2xl font-bold text-white">2</span>
+            </div>
+            <h4 class="font-semibold text-text-primary">Sari Dewi</h4>
+            <p class="text-sm text-text-secondary">890 poin</p>
+          </div>
+          <div class="text-center">
+            <div class="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+              <span class="text-2xl font-bold text-white">3</span>
+            </div>
+            <h4 class="font-semibold text-text-primary">Ahmad Fauzi</h4>
+            <p class="text-sm text-text-secondary">820 poin</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Quiz Data
+    const quizData = [
+      {
+        question: "Tari tradisional apa yang berasal dari Banyuwangi dan dikenal dengan gerakan yang dinamis serta kostum berwarna cerah?",
+        options: [
+          "Tari Gandrung",
+          "Tari Remo",
+          "Tari Kuda Lumping",
+          "Tari Topeng"
+        ],
+        correctAnswer: 0,
+        category: "Seni & Tarian",
+        explanation: "Tari Gandrung adalah tarian tradisional dari Banyuwangi yang awalnya dipentaskan sebagai rasa syukur setelah panen."
+      },
+      {
+        question: "Candi apakah yang merupakan peninggalan Kerajaan Majapahit di Jawa Timur dan dikenal dengan relief cerita Ramayana?",
+        options: [
+          "Candi Borobudur",
+          "Candi Prambanan",
+          "Candi Penataran",
+          "Candi Singosari"
+        ],
+        correctAnswer: 2,
+        category: "Sejarah & Candi",
+        explanation: "Candi Penataran di Blitar adalah kompleks candi Hindu terbesar di Jawa Timur peninggalan Kerajaan Majapahit."
+      },
+      {
+        question: "Makanan khas Surabaya yang terkenal dengan kuah hitamnya berasal dari buah apa?",
+        options: [
+          "Kluwek",
+          "Asam Jawa",
+          "Kemiri",
+          "Lengkuas"
+        ],
+        correctAnswer: 0,
+        category: "Kuliner Tradisional",
+        explanation: "Rawon menggunakan kluwek yang memberikan warna hitam khas pada kuahnya."
+      },
+      {
+        question: "Upacara adat Kasada dilakukan oleh suku apa di kawasan Gunung Bromo?",
+        options: [
+          "Suku Tengger",
+          "Suku Madura",
+          "Suku Osing",
+          "Suku Jawa"
+        ],
+        correctAnswer: 0,
+        category: "Tradisi & Upacara",
+        explanation: "Upacara Kasada adalah ritual tahunan masyarakat Suku Tengger untuk menghormati leluhur dan memohon berkah."
+      },
+      {
+        question: "Alat musik tradisional Jawa Timur yang terbuat dari bambu dan dimainkan dengan cara digoyang disebut?",
+        options: [
+          "Angklung",
+          "Gamelan",
+          "Suling",
+          "Kendang"
+        ],
+        correctAnswer: 0,
+        category: "Seni & Tarian",
+        explanation: "Angklung adalah alat musik tradisional yang terbuat dari bambu dan dimainkan dengan cara digoyang."
+      },
+      {
+        question: "Kota manakah di Jawa Timur yang dikenal sebagai Kota Pahlawan?",
+        options: [
+          "Malang",
+          "Surabaya",
+          "Kediri",
+          "Madiun"
+        ],
+        correctAnswer: 1,
+        category: "Sejarah & Candi",
+        explanation: "Surabaya dijuluki Kota Pahlawan karena peristiwa pertempuran 10 November 1945 melawan tentara Sekutu."
+      },
+      {
+        question: "Batik khas Jawa Timur yang berasal dari Madura biasanya memiliki ciri khas apa?",
+        options: [
+          "Warna cerah dan motif besar",
+          "Warna gelap dan motif kecil",
+          "Motif geometris sederhana",
+          "Motif floral halus"
+        ],
+        correctAnswer: 0,
+        category: "Kerajinan & Batik",
+        explanation: "Batik Madura dikenal dengan warna-warna cerah seperti merah, kuning, hijau dan motif-motif yang besar dan berani."
+      },
+      {
+        question: "Permainan tradisional Jawa Timur 'Egrang' biasanya terbuat dari bahan apa?",
+        options: [
+          "Bambu",
+          "Kayu",
+          "Besi",
+          "Plastik"
+        ],
+        correctAnswer: 0,
+        category: "Permainan Tradisional",
+        explanation: "Egrang tradisional terbuat dari dua batang bambu dengan pijakan kaki yang memungkinkan pemainnya berjalan di atasnya."
+      },
+      {
+        question: "Rumah adat Jawa Timur yang disebut 'Joglo' biasanya memiliki ciri khas atap seperti apa?",
+        options: [
+          "Limas",
+          "Pelana",
+          "Tumpang",
+          "Dome"
+        ],
+        correctAnswer: 2,
+        category: "Arsitektur Tradisional",
+        explanation: "Atap Joglo memiliki bentuk tumpang yang merupakan ciri khas arsitektur tradisional Jawa."
+      },
+      {
+        question: "Festival budaya tahunan di Jawa Timur yang menampilkan parade replika miniatur gunung disebut?",
+        options: [
+          "Festival Lembah",
+          "Festival Gunungan",
+          "Karnaval Bunga",
+          "Pasar Malam"
+        ],
+        correctAnswer: 1,
+        category: "Festival & Acara",
+        explanation: "Festival Gunungan adalah tradisi di beberapa daerah Jawa Timur yang menampilkan replika gunung dari hasil bumi."
+      }
+    ];
+
+    // Quiz State
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userAnswers = [];
+    let quizStarted = false;
+
+    // DOM Elements
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultsScreen = document.getElementById('results-screen');
+    const startQuizBtn = document.getElementById('start-quiz');
+    const prevQuestionBtn = document.getElementById('prev-question');
+    const nextQuestionBtn = document.getElementById('next-question');
+    const restartQuizBtn = document.getElementById('restart-quiz');
+    const questionElement = document.getElementById('question');
+    const optionsContainer = document.getElementById('options-container');
+    const currentQuestionElement = document.getElementById('current-question');
+    const totalQuestionsElement = document.getElementById('total-questions');
+    const scoreElement = document.getElementById('score');
+    const progressBar = document.getElementById('progress-bar');
+    const finalScoreElement = document.getElementById('final-score');
+    const resultMessageElement = document.getElementById('result-message');
+    const resultDetailsElement = document.getElementById('result-details');
+
+    // Initialize Quiz
+    function initQuiz() {
+      totalQuestionsElement.textContent = quizData.length;
+      updateProgressBar();
+    }
+
+    // Start Quiz
+    function startQuiz() {
+      quizStarted = true;
+      welcomeScreen.classList.add('hidden');
+      quizScreen.classList.remove('hidden');
+      currentQuestionIndex = 0;
+      score = 0;
+      userAnswers = [];
+      showQuestion();
+    }
+
+    // Show Question
+    function showQuestion() {
+      const question = quizData[currentQuestionIndex];
+      questionElement.textContent = question.question;
+      currentQuestionElement.textContent = currentQuestionIndex + 1;
+      scoreElement.textContent = score;
+
+      // Clear previous options
+      optionsContainer.innerHTML = '';
+
+      // Create new options
+      question.options.forEach((option, index) => {
+        const optionElement = document.createElement('button');
+        optionElement.className = 'bg-surface text-text-primary p-4 rounded-lg text-left hover:bg-primary hover:text-white transition-250 cultural-card';
+        optionElement.textContent = option;
+        optionElement.addEventListener('click', () => selectAnswer(index));
+
+        // Check if user has already answered this question
+        if (userAnswers[currentQuestionIndex] !== undefined) {
+          if (userAnswers[currentQuestionIndex] === index) {
+            if (index === question.correctAnswer) {
+              optionElement.classList.add('bg-success', 'text-white');
+            } else {
+              optionElement.classList.add('bg-accent', 'text-white');
+            }
+          } else if (index === question.correctAnswer) {
+            optionElement.classList.add('bg-success', 'text-white');
+          }
+        }
+
+        optionsContainer.appendChild(optionElement);
+      });
+
+      // Update navigation buttons
+      prevQuestionBtn.classList.toggle('hidden', currentQuestionIndex === 0);
+      nextQuestionBtn.textContent = currentQuestionIndex === quizData.length - 1 ? 'Selesai' : 'Selanjutnya';
+
+      updateProgressBar();
+    }
+
+    // Select Answer
+    function selectAnswer(selectedIndex) {
+      if (userAnswers[currentQuestionIndex] !== undefined) return;
+
+      const question = quizData[currentQuestionIndex];
+      userAnswers[currentQuestionIndex] = selectedIndex;
+
+      if (selectedIndex === question.correctAnswer) {
+        score += 10;
+        scoreElement.textContent = score;
+      }
+
+      showQuestion();
+    }
+
+    // Next Question
+    function nextQuestion() {
+      if (currentQuestionIndex < quizData.length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    // Previous Question
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        showQuestion();
+      }
+    }
+
+    // Update Progress Bar
+    function updateProgressBar() {
+      const progress = ((currentQuestionIndex + 1) / quizData.length) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+
+    // Show Results
+    function showResults() {
+      quizScreen.classList.add('hidden');
+      resultsScreen.classList.remove('hidden');
+
+      finalScoreElement.textContent = score;
+
+      // Set result message based on score
+      let message = '';
+      if (score >= 80) {
+        message = 'Luar biasa! Anda benar-benar ahli budaya Jawa Timur!';
+      } else if (score >= 60) {
+        message = 'Bagus! Pengetahuan Anda tentang budaya Jawa Timur cukup baik.';
+      } else if (score >= 40) {
+        message = 'Cukup baik! Masih ada ruang untuk belajar lebih dalam.';
+      } else {
+        message = 'Jangan menyerah! Terus pelajari budaya Jawa Timur yang kaya ini.';
+      }
+      resultMessageElement.textContent = message;
+
+      // Show result details
+      let details = '<div class="space-y-3">';
+      quizData.forEach((question, index) => {
+        const userAnswer = userAnswers[index];
+        const isCorrect = userAnswer === question.correctAnswer;
+        details += `
+                    <div class="p-3 rounded-lg ${isCorrect ? 'bg-success/10 border border-success/20' : 'bg-accent/10 border border-accent/20'}">
+                        <div class="font-medium mb-1">Pertanyaan ${index + 1}: ${question.question}</div>
+                        <div class="text-sm ${isCorrect ? 'text-success' : 'text-accent'}">
+                            ${isCorrect ? '✓ Jawaban Anda benar' : '✗ Jawaban Anda salah'}
+                        </div>
+                        <div class="text-xs text-text-muted mt-1">Kategori: ${question.category}</div>
+                        ${!isCorrect ? `<div class="text-xs text-text-secondary mt-1">Penjelasan: ${question.explanation}</div>` : ''}
+                    </div>
+                `;
+      });
+      details += '</div>';
+      resultDetailsElement.innerHTML = details;
+    }
+
+    // Restart Quiz
+    function restartQuiz() {
+      resultsScreen.classList.add('hidden');
+      welcomeScreen.classList.remove('hidden');
+      quizStarted = false;
+    }
+
+    // Event Listeners
+    startQuizBtn.addEventListener('click', startQuiz);
+    nextQuestionBtn.addEventListener('click', nextQuestion);
+    prevQuestionBtn.addEventListener('click', prevQuestion);
+    restartQuizBtn.addEventListener('click', restartQuiz);
+
+    // Initialize the quiz when page loads
+    document.addEventListener('DOMContentLoaded', initQuiz);
+  </script>
+</body>
+
+</html>

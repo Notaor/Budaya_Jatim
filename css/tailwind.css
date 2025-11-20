@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary Colors */
+  --color-primary: #D4AF37; /* heritage-gold */
+  --color-primary-50: #FEFCF7; /* heritage-gold-50 */
+  --color-primary-100: #FDF8E8; /* heritage-gold-100 */
+  --color-primary-200: #FAF0D1; /* heritage-gold-200 */
+  --color-primary-300: #F7E8BA; /* heritage-gold-300 */
+  --color-primary-400: #F4E0A3; /* heritage-gold-400 */
+  --color-primary-500: #D4AF37; /* heritage-gold-500 */
+  --color-primary-600: #B8962F; /* heritage-gold-600 */
+  --color-primary-700: #9C7D27; /* heritage-gold-700 */
+  --color-primary-800: #80641F; /* heritage-gold-800 */
+  --color-primary-900: #644B17; /* heritage-gold-900 */
+
+  /* Secondary Colors */
+  --color-secondary: #8B4513; /* traditional-brown */
+  --color-secondary-50: #F7F3F0; /* traditional-brown-50 */
+  --color-secondary-100: #EFE7E1; /* traditional-brown-100 */
+  --color-secondary-200: #DFCFC3; /* traditional-brown-200 */
+  --color-secondary-300: #CFB7A5; /* traditional-brown-300 */
+  --color-secondary-400: #BF9F87; /* traditional-brown-400 */
+  --color-secondary-500: #8B4513; /* traditional-brown-500 */
+  --color-secondary-600: #7A3C11; /* traditional-brown-600 */
+  --color-secondary-700: #69330F; /* traditional-brown-700 */
+  --color-secondary-800: #582A0D; /* traditional-brown-800 */
+  --color-secondary-900: #47210B; /* traditional-brown-900 */
+
+  /* Accent Colors */
+  --color-accent: #DC143C; /* batik-red */
+  --color-accent-50: #FDF2F4; /* batik-red-50 */
+  --color-accent-100: #FBE5E9; /* batik-red-100 */
+  --color-accent-200: #F7CBD3; /* batik-red-200 */
+  --color-accent-300: #F3B1BD; /* batik-red-300 */
+  --color-accent-400: #EF97A7; /* batik-red-400 */
+  --color-accent-500: #DC143C; /* batik-red-500 */
+  --color-accent-600: #C21235; /* batik-red-600 */
+  --color-accent-700: #A8102E; /* batik-red-700 */
+  --color-accent-800: #8E0E27; /* batik-red-800 */
+  --color-accent-900: #740C20; /* batik-red-900 */
+
+  /* Background Colors */
+  --color-background: #FEFEFE; /* clean-canvas */
+  --color-surface: #F8F6F0; /* warm-off-white */
+  --color-surface-light: #FDFCF8; /* warm-off-white-light */
+
+  /* Text Colors */
+  --color-text-primary: #2C1810; /* dark-brown */
+  --color-text-secondary: #5D4E37; /* medium-brown */
+  --color-text-muted: #8B7355; /* light-brown */
+
+  /* Status Colors */
+  --color-success: #228B22; /* cultural-green */
+  --color-success-50: #F0F8F0; /* cultural-green-50 */
+  --color-success-100: #E1F1E1; /* cultural-green-100 */
+  --color-success-500: #228B22; /* cultural-green-500 */
+
+  --color-warning: #FF8C00; /* warm-orange */
+  --color-warning-50: #FFF8F0; /* warm-orange-50 */
+  --color-warning-100: #FFF1E1; /* warm-orange-100 */
+  --color-warning-500: #FF8C00; /* warm-orange-500 */
+
+  --color-error: #B22222; /* deep-red */
+  --color-error-50: #F8F0F0; /* deep-red-50 */
+  --color-error-100: #F1E1E1; /* deep-red-100 */
+  --color-error-500: #B22222; /* deep-red-500 */
+
+  /* Border Colors */
+  --color-border: #E5DDD5; /* neutral-border */
+  --color-border-light: #F0EAE2; /* light-border */
+
+  /* Shadow Colors */
+  --shadow-primary: rgba(212, 175, 55, 0.15); /* heritage-gold-shadow */
+  --shadow-neutral: rgba(0, 0, 0, 0.1); /* neutral-shadow */
+}
+
+@layer base {
+  body {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    color: var(--color-text-primary);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white font-montserrat font-semibold px-6 py-3 rounded-lg transition-all duration-250 ease-in-out;
+    box-shadow: 0 4px 12px var(--shadow-primary);
+  }
+
+  .btn-primary:hover {
+    @apply bg-primary-600;
+    border: 2px solid var(--color-primary);
+  }
+
+  /* Tambahkan di bagian components */
+.btn-secondary {
+  @apply bg-secondary text-white font-montserrat font-semibold px-6 py-3 rounded-lg transition-all duration-250 ease-in-out;
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.15);
+}
+
+.btn-secondary:hover {
+  @apply bg-secondary-600;
+  border: 2px solid var(--color-secondary);
+}
+  .cultural-card {
+    box-shadow: 0 2px 8px var(--shadow-neutral);
+    @apply transition-all duration-250 ease-in-out;
+  }
+
+  .cultural-card:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 0 4px 16px var(--shadow-neutral);
+  }
+
+  .form-input {
+    @apply border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary transition-colors duration-250;
+  }
+
+  .testimonial-text {
+    font-family: 'Crimson Text', serif;
+    @apply text-text-secondary;
+  }
+
+  .cta-text {
+    font-family: 'Montserrat', sans-serif;
+    @apply font-medium;
+  }
+
+  .fade-in {
+    @apply opacity-0 translate-y-4 transition-all duration-500 ease-in-out;
+  }
+
+  .fade-in.visible {
+    @apply opacity-100 translate-y-0;
+  }
+}
+
+@layer utilities {
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .transition-250 {
+    transition-duration: 250ms;
+    transition-timing-function: ease-in-out;
+  }
+}

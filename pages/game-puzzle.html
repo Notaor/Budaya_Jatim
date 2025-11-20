@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cocokkan Gambar Budaya - East Java Culture Hub</title>
+  <meta name="description"
+    content="Asah daya ingat Anda dengan mencocokkan gambar-gambar budaya Jawa Timur yang penuh warna dan makna" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <style>
+    /* Custom styles untuk game */
+    .memory-card {
+      transition: all 0.3s ease;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .memory-card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .memory-card.matched {
+      transform: rotateY(180deg);
+      cursor: default;
+    }
+
+    .card-front,
+    .card-back {
+      backface-visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-front {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      transform: rotateY(180deg);
+    }
+
+    .card-back {
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .game-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .game-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .progress-bar {
+      height: 8px;
+      background-color: var(--color-border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      transition: width 0.3s ease;
+    }
+
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+      background: var(--color-surface);
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--color-primary);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+    }
+
+    .difficulty-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .difficulty-btn.active {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    .difficulty-btn:not(.active) {
+      background-color: var(--color-surface);
+      color: var(--color-text-secondary);
+    }
+
+    .game-complete {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .card-image {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      border-radius: 0.25rem;
+    }
+
+    .card-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238B4513' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+
+<body class="font-source-sans bg-background text-text-primary min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b borderborder z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <svg class="h-10 w-10 text-primary" viewBox="0 0 40 40" fill="currentColor">
+            <path d="M20 2L37 12v16L20 38L3 28V12L20 2z" />
+            <path d="M20 8L30 14v12L20 32L10 26V14L20 8z" fill="white" />
+            <circle cx="20" cy="20" r="6" fill="currentColor" />
+          </svg>
+          <span class="ml-3 text-xl font-playfair font-semibold text-text-primary">East Java Culture Hub</span>
+        </div>
+        <a href="../pages/landing_page.html" class="text-primary hover:text-primary-600 font-medium">Kembali ke
+          Beranda</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Game Content -->
+  <section class="pt-24 pb-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-playfair font-bold text-text-primary mb-4">
+          Cocokkan Gambar Budaya
+        </h1>
+        <p class="text-lg text-text-secondary max-w-2xl mx-auto mb-6">
+          Asah daya ingat Anda dengan mencocokkan gambar-gambar budaya Jawa
+          Timur yang penuh warna dan makna
+        </p>
+
+        <!-- Difficulty Selector -->
+        <div class="flex justify-center gap-4 mb-6">
+          <button class="difficulty-btn active" data-difficulty="easy">
+            Mudah (8 Kartu)
+          </button>
+          <button class="difficulty-btn" data-difficulty="medium">
+            Menengah (12 Kartu)
+          </button>
+          <button class="difficulty-btn" data-difficulty="hard">
+            Sulit (16 Kartu)
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Stats -->
+      <div class="game-stats">
+        <div class="stat-box">
+          <div class="stat-value" id="moves">0</div>
+          <div class="stat-label">Langkah</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="timer">00:00</div>
+          <div class="stat-label">Waktu</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="matches">0</div>
+          <div class="stat-label">Cocok</div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar mb-6">
+        <div class="progress-fill" id="progress" style="width: 0%"></div>
+      </div>
+
+      <!-- Game Container -->
+      <div class="cultural-card bg-white rounded-2xl p-6 mb-8">
+        <!-- Game Board -->
+        <div id="game-board" class="game-grid mb-6">
+          <!-- Kartu akan di-generate oleh JavaScript -->
+        </div>
+
+        <!-- Game Controls -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button id="start-btn"
+            class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-600 transition-250">
+            Mulai Game
+          </button>
+          <button id="reset-btn"
+            class="bg-accent text-white px-6 py-3 rounded-lg font-medium hover:bg-accent-600 transition-250">
+            Ulang Game
+          </button>
+          <button id="hint-btn"
+            class="bg-secondary text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary-600 transition-250">
+            Petunjuk
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Instructions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-surface rounded-lg p-6">
+          <h3 class="font-semibold text-text-primary mb-3">Cara Bermain</h3>
+          <ul class="text-sm text-text-secondary space-y-2">
+            <li>• Klik kartu untuk membuka gambar</li>
+            <li>• Cari pasangan gambar yang sama</li>
+            <li>• Selesaikan semua pasangan secepat mungkin</li>
+            <li>• Pelajari budaya Jawa Timur sambil bermain</li>
+          </ul>
+        </div>
+        <div class="bg-surface rounded-lg p-6">
+          <h3 class="font-semibold text-text-primary mb-3">
+            Gambar Budaya
+          </h3>
+          <ul class="text-sm text-text-secondary space-y-2">
+            <li>• Motif batik tradisional</li>
+            <li>• Tarian daerah</li>
+            <li>• Makanan khas</li>
+            <li>• Candi bersejarah</li>
+            <li>• Alat musik tradisional</li>
+            <li>• Pakaian adat</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="../pages/landing_page.html#games"
+          class="bg-white text-text-primary border-2 border-border px-8 py-3 rounded-lg font-medium text-center hover:bg-border transition-250">
+          Kembali ke Game Lain
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game Completion Modal -->
+  <div id="completion-modal"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+      <div class="w-16 h-16 bg-success rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+        </svg>
+      </div>
+      <h3 class="text-2xl font-playfair font-semibold text-text-primary mb-2">
+        Selamat!
+      </h3>
+      <p class="text-text-secondary mb-4" id="completion-message">
+        Anda berhasil menyelesaikan game!
+      </p>
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="stat-box">
+          <div class="stat-value" id="final-moves">0</div>
+          <div class="stat-label">Langkah</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="final-time">00:00</div>
+          <div class="stat-label">Waktu</div>
+        </div>
+      </div>
+      <div class="flex gap-4">
+        <button id="play-again-btn"
+          class="flex-1 bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-600 transition-250">
+          Main Lagi
+        </button>
+        <button id="close-modal-btn"
+          class="flex-1 bg-white text-text-primary border-2 border-border px-4 py-2 rounded-lg font-medium hover:bg-border transition-250">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data gambar budaya Jawa Timur
+    const cultureImages = [
+      { id: 1, name: "Reog Ponorogo", emoji: "🦚", color: "primary" },
+      { id: 2, name: "Candi Borobudur", emoji: "🏛️", color: "accent" },
+      { id: 3, name: "Rawon", emoji: "🍜", color: "secondary" },
+      { id: 4, name: "Batik", emoji: "🎨", color: "success" },
+      { id: 5, name: "Wayang Kulit", emoji: "👤", color: "warning" },
+      { id: 6, name: "Gamelan", emoji: "🥁", color: "primary" },
+      { id: 7, name: "Lumpia Semarang", emoji: "🌯", color: "accent" },
+      { id: 8, name: "Tari Remo", emoji: "💃", color: "secondary" },
+    ];
+
+    // Variabel game state
+    let gameState = {
+      difficulty: "easy",
+      cards: [],
+      flippedCards: [],
+      matchedPairs: 0,
+      totalPairs: 0,
+      moves: 0,
+      timer: 0,
+      timerInterval: null,
+      gameStarted: false,
+      gameCompleted: false,
+      canFlip: true
+    };
+
+    // Elemen DOM
+    const gameBoard = document.getElementById('game-board');
+    const movesElement = document.getElementById('moves');
+    const timerElement = document.getElementById('timer');
+    const matchesElement = document.getElementById('matches');
+    const progressElement = document.getElementById('progress');
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const hintBtn = document.getElementById('hint-btn');
+    const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+    const completionModal = document.getElementById('completion-modal');
+    const finalMovesElement = document.getElementById('final-moves');
+    const finalTimeElement = document.getElementById('final-time');
+    const completionMessage = document.getElementById('completion-message');
+    const playAgainBtn = document.getElementById('play-again-btn');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+
+    // Fungsi untuk memformat waktu
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Fungsi untuk memulai timer
+    function startTimer() {
+      gameState.timerInterval = setInterval(() => {
+        gameState.timer++;
+        timerElement.textContent = formatTime(gameState.timer);
+      }, 1000);
+    }
+
+    // Fungsi untuk menghentikan timer
+    function stopTimer() {
+      clearInterval(gameState.timerInterval);
+      gameState.timerInterval = null;
+    }
+
+    // Fungsi untuk mereset timer
+    function resetTimer() {
+      stopTimer();
+      gameState.timer = 0;
+      timerElement.textContent = formatTime(0);
+    }
+
+    // Fungsi untuk mengatur kesulitan
+    function setDifficulty(difficulty) {
+      gameState.difficulty = difficulty;
+
+      // Update UI untuk tombol difficulty
+      difficultyBtns.forEach(btn => {
+        if (btn.dataset.difficulty === difficulty) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Reset game dengan difficulty baru
+      resetGame();
+    }
+
+    // Fungsi untuk membuat kartu berdasarkan difficulty
+    function createCards() {
+      let cardCount;
+
+      switch (gameState.difficulty) {
+        case 'easy':
+          cardCount = 8;
+          break;
+        case 'medium':
+          cardCount = 12;
+          break;
+        case 'hard':
+          cardCount = 16;
+          break;
+        default:
+          cardCount = 8;
+      }
+
+      // Pilih gambar sesuai dengan jumlah kartu yang dibutuhkan
+      const selectedImages = cultureImages.slice(0, cardCount / 2);
+
+      // Duplikat gambar untuk membuat pasangan
+      const cardPairs = [...selectedImages, ...selectedImages];
+
+      // Acak urutan kartu
+      gameState.cards = shuffleArray(cardPairs);
+      gameState.totalPairs = selectedImages.length;
+    }
+
+    // Fungsi untuk mengacak array
+    function shuffleArray(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    }
+
+    // Fungsi untuk merender kartu ke papan permainan
+    function renderCards() {
+      gameBoard.innerHTML = '';
+
+      gameState.cards.forEach((card, index) => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'memory-card aspect-square relative';
+        cardElement.dataset.index = index;
+        cardElement.dataset.id = card.id;
+
+        cardElement.innerHTML = `
+            <div class="card-front rounded-lg flex flex-col items-center justify-center p-2">
+              <span class="text-3xl mb-2">${card.emoji}</span>
+              <span class="text-xs text-white text-center">${card.name}</span>
+            </div>
+            <div class="card-back card-pattern rounded-lg flex items-center justify-center">
+              <span class="text-2xl text-text-muted">?</span>
+            </div>
+          `;
+
+        cardElement.addEventListener('click', () => flipCard(cardElement));
+        gameBoard.appendChild(cardElement);
+      });
+    }
+
+    // Fungsi untuk membalik kartu
+    function flipCard(cardElement) {
+      // Cek apakah game sudah dimulai dan kartu bisa dibalik
+      if (!gameState.gameStarted || !gameState.canFlip || gameState.gameCompleted) return;
+
+      const index = parseInt(cardElement.dataset.index);
+      const card = gameState.cards[index];
+
+      // Cek apakah kartu sudah terbuka atau sudah cocok
+      if (cardElement.classList.contains('flipped') || cardElement.classList.contains('matched')) return;
+
+      // Cek apakah sudah ada 2 kartu terbuka
+      if (gameState.flippedCards.length >= 2) return;
+
+      // Balik kartu
+      cardElement.classList.add('flipped');
+      gameState.flippedCards.push({ element: cardElement, id: card.id });
+
+      // Jika sudah ada 2 kartu terbuka, cek apakah cocok
+      if (gameState.flippedCards.length === 2) {
+        gameState.canFlip = false;
+        gameState.moves++;
+        movesElement.textContent = gameState.moves;
+
+        setTimeout(checkMatch, 1000);
+      }
+    }
+
+    // Fungsi untuk memeriksa apakah dua kartu cocok
+    function checkMatch() {
+      const [card1, card2] = gameState.flippedCards;
+
+      if (card1.id === card2.id) {
+        // Kartu cocok
+        card1.element.classList.add('matched');
+        card2.element.classList.add('matched');
+        gameState.matchedPairs++;
+        matchesElement.textContent = gameState.matchedPairs;
+
+        // Update progress bar
+        const progress = (gameState.matchedPairs / gameState.totalPairs) * 100;
+        progressElement.style.width = `${progress}%`;
+
+        // Cek apakah game selesai
+        if (gameState.matchedPairs === gameState.totalPairs) {
+          completeGame();
+        }
+      } else {
+        // Kartu tidak cocok, balik kembali
+        card1.element.classList.remove('flipped');
+        card2.element.classList.remove('flipped');
+      }
+
+      // Reset flipped cards
+      gameState.flippedCards = [];
+      gameState.canFlip = true;
+    }
+
+    // Fungsi untuk memulai game
+    function startGame() {
+      if (gameState.gameStarted) return;
+
+      gameState.gameStarted = true;
+      startTimer();
+      startBtn.textContent = 'Game Berjalan';
+      startBtn.disabled = true;
+    }
+
+    // Fungsi untuk mereset game
+    function resetGame() {
+      // Reset state
+      gameState.flippedCards = [];
+      gameState.matchedPairs = 0;
+      gameState.moves = 0;
+      gameState.gameStarted = false;
+      gameState.gameCompleted = false;
+      gameState.canFlip = true;
+
+      // Reset UI
+      movesElement.textContent = '0';
+      matchesElement.textContent = '0';
+      progressElement.style.width = '0%';
+      startBtn.textContent = 'Mulai Game';
+      startBtn.disabled = false;
+
+      // Reset timer
+      resetTimer();
+
+      // Buat kartu baru
+      createCards();
+      renderCards();
+
+      // Tutup modal jika terbuka
+      completionModal.classList.add('hidden');
+    }
+
+    // Fungsi untuk menyelesaikan game
+    function completeGame() {
+      gameState.gameCompleted = true;
+      stopTimer();
+
+      // Tampilkan modal penyelesaian
+      finalMovesElement.textContent = gameState.moves;
+      finalTimeElement.textContent = formatTime(gameState.timer);
+
+      // Berikan pesan berdasarkan performa
+      let message = "Anda berhasil menyelesaikan game! ";
+      if (gameState.moves <= gameState.totalPairs * 1.5) {
+        message += "Performa luar biasa!";
+      } else if (gameState.moves <= gameState.totalPairs * 2) {
+        message += "Hasil yang bagus!";
+      } else {
+        message += "Terus berlatih untuk hasil yang lebih baik!";
+      }
+
+      completionMessage.textContent = message;
+      completionModal.classList.remove('hidden');
+    }
+
+    // Fungsi untuk memberikan petunjuk
+    function giveHint() {
+      if (!gameState.gameStarted || gameState.gameCompleted) return;
+
+      // Cari kartu yang belum cocok
+      const unmatchedCards = Array.from(document.querySelectorAll('.memory-card:not(.matched)'));
+
+      if (unmatchedCards.length < 2) return;
+
+      // Pilih dua kartu acak yang belum cocok
+      const randomCards = shuffleArray(unmatchedCards).slice(0, 2);
+
+      // Tampilkan kartu sebentar
+      gameState.canFlip = false;
+
+      randomCards.forEach(card => {
+        card.classList.add('flipped');
+      });
+
+      // Sembunyikan kartu setelah 1.5 detik
+      setTimeout(() => {
+        randomCards.forEach(card => {
+          card.classList.remove('flipped');
+        });
+        gameState.canFlip = true;
+      }, 1500);
+    }
+
+    // Event listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+    hintBtn.addEventListener('click', giveHint);
+
+    difficultyBtns.forEach(btn => {
+      btn.addEventListener('click', () => setDifficulty(btn.dataset.difficulty));
+    });
+
+    playAgainBtn.addEventListener('click', () => {
+      completionModal.classList.add('hidden');
+      resetGame();
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      completionModal.classList.add('hidden');
+    });
+
+    // Inisialisasi game
+    resetGame();
+  </script>
+</body>
+
+</html>
